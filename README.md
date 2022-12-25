@@ -1,4 +1,5 @@
-# Bagisto/Razorpay
+# Bagisto Razorpay Payment Gateway
+Razorpay is a popular payment gateway in India. This package provides a additional strong help for the user to use the Razorpay payment gateway in their Bagisto laravel ecommerce application.
 
 ### Extension to Integrate Razorpay payment gateway with bagisto laravel ecommerce.
 
