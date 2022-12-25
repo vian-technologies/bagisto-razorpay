@@ -1,15 +1,13 @@
 <?php
 
-
 namespace Vian\Razorpay\Http\Controllers;
 
+use Razorpay\Api\Api;
+use Illuminate\Http\Request;
 use Webkul\Checkout\Facades\Cart;
 use Webkul\Sales\Repositories\OrderRepository;
 use Webkul\Sales\Repositories\InvoiceRepository;
-use Illuminate\Http\Request;
-use Razorpay\Api\Api;
 use Razorpay\Api\Errors\SignatureVerificationError;
-
 
 class RazorpayController extends Controller
 {
@@ -19,6 +17,7 @@ class RazorpayController extends Controller
      * @var \Webkul\Sales\Repositories\OrderRepository
      */
     protected $orderRepository;
+
     /**
      * InvoiceRepository $invoiceRepository
      *
@@ -43,7 +42,6 @@ class RazorpayController extends Controller
      *
      * @return \Illuminate\View\View
      */
-
     public function redirect(Request $request)
     {
 
@@ -57,10 +55,10 @@ class RazorpayController extends Controller
 
         $api = new Api(core()->getConfigData('sales.paymentmethods.razorpay.key_id'), core()->getConfigData('sales.paymentmethods.razorpay.secret'));
 
-        //
-        // We create an razorpay order using orders api
-        // Docs: https://docs.razorpay.com/docs/orders
-        //
+        /**
+         * We create an razorpay order using orders api
+         * Docs: https://docs.razorpay.com/docs/orders
+         */
         $orderData = [
             'receipt'         => $cart->id,
             'amount'          => $total_amount* 100,
@@ -72,8 +70,6 @@ class RazorpayController extends Controller
 
         $razorpayOrderId = $razorpayOrder['id'];
 
-        // $_SESSION['razorpay_order_id'] = $razorpayOrderId;
-
         $request->session()->put('razorpay_order_id', $razorpayOrderId);
 
         $displayAmount = $amount = $orderData['amount'];
@@ -83,19 +79,16 @@ class RazorpayController extends Controller
             "amount"            => $orderData['amount'],
             "name"              => $billingAddress->name,
             "description"       => "RazorPay payment collection for the order - " . $cart->id,
+            "order_id"          => $razorpayOrderId,
             "prefill"           => [
-                "name"              => $billingAddress->name,
-                "email"             => $billingAddress->email,
-                "contact"           => $billingAddress->phone,
+                "name"      => $billingAddress->name,
+                "email"     => $billingAddress->email,
+                "contact"   => $billingAddress->phone,
             ],
             "notes"             => [
                 "address"           => $billingAddress->address,
                 "merchant_order_id" => $cart->id,
             ],
-            "theme"             => [
-                "color"             => "#F37254"
-            ],
-            "order_id"          => $razorpayOrderId,
         ];
 
         $json = json_encode($data);

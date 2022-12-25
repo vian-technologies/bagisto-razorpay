@@ -1,0 +1,26 @@
+{
+    "name": "vian-technologies/bagisto-razorpay",
+    "description": "Razorpay payment gateway for bagisto laravel open source ecommerce platform.",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Vian\\Razorpay\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vian\\Razorpay\\Providers\\RazorpayServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "authors": [
+        {
+            "name": "Shubham Mehrotra",
+            "email": "shubh0896m@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
